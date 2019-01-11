@@ -17,6 +17,3 @@ def	readdata(file,nbuser,nbfilm):
         # print(str(userid)+"	"+str(filmid)+"	"+str(score))
         res[userid, filmid] = score
     return res
-
-
-print(readdata('ml-100k/u.data', 943, 1682))
