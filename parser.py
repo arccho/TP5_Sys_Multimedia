@@ -9,6 +9,8 @@ def	readdata(file,nbuser,nbfilm):
     fichier = open(file,	'rU')
     lignes = fichier.readlines()
 
+    cumul = 0
+    i = 0
     #	lecture	ligne	a	ligne
     for line in lignes:
         # print(line)
@@ -16,11 +18,13 @@ def	readdata(file,nbuser,nbfilm):
         userid = int(lineSplit[0]) - 1
         filmid = int(lineSplit[1]) - 1
         score = int(lineSplit[2])
+        cumul = cumul +score
+        i += 1
         # print(str(userid)+"	"+str(filmid)+"	"+str(score))
         res[userid, filmid] = score
-    return res
+    return cumul/i, res
 
-# RMSE 1
+# RMSE random
 def calc_rmse_predi_random(nbuser, nbvote, nbfilm, matrice):
     sum_core = 0
     for index_user in range(0, nbuser):
@@ -35,6 +39,6 @@ nbuser = 943
 nbfilm = 1682
 nbvote = 100000
 
-matrice_recommandation = readdata('ml-100k/u.data', nbuser, nbfilm)
-#print(matrice_recommandation)
+mean, matrice_recommandation = readdata('ml-100k/u.data', nbuser, nbfilm)
+print(mean)
 print(calc_rmse_predi_random(nbuser, nbvote, nbfilm, matrice_recommandation))
