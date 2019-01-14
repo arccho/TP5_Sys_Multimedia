@@ -87,6 +87,18 @@ def calc_rmse_predict_basique(moy_notes, nbuser, nbvote, nbfilm, matrice):
     return math.sqrt(sum_score/ nbvote)
 
 
+def calc_similarite_voisinage(i, j, matriceInit, nbuser, nbfilm, mean, nbvote):
+    matrice = numpy.ones(nbuser, nbfilm)
+
+    # Remplissage de la matrice residuelle
+    for i in range(0, nbuser):
+        for j in range(0, nbfilm):
+            if matriceInit[i][j] != -1:
+                score = matriceInit[i][j] - calc_rmse_predict_basique(mean, nbuser, nbvote, nbfilm, matriceInit)
+                matrice[i][j] = score
+
+    
+
 
 nbuser = 943
 nbfilm = 1682
