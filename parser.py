@@ -81,6 +81,7 @@ def calc_rmse_predict_basique(moy_notes, nbuser, nbfilm, matrice):
 
 
 
+
 nbuser = 943
 nbfilm = 1682
 nbvote = 100000
