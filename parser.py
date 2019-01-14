@@ -89,8 +89,11 @@ def calc_rmse_predict_basique(moy_notes, nbuser, nbvote, nbfilm, matrice):
 def calc_rmse_predict_voisin(moy_notes, nbuser, nbvote, nbfilm, matrice):
     bu = list()
     bi = list()
+
     Vue_film = numpy.zeros(nbfilm)
     Vue_user = numpy.zeros(nbuser)
+    matR = numpy.zeros((nbuser, nbfilm))
+
     for index_film in range(0, nbfilm):
         nb_vue = 0
         for index_user in range(0, nbuser):
@@ -126,6 +129,18 @@ def calc_rmse_predict_voisin(moy_notes, nbuser, nbvote, nbfilm, matrice):
             if score > -1:
                 sum_rui += score
         bi.append(sum_rui / Vue_film[index_film] - moy_notes)
+
+
+    # Remplissage de la matrice residuelle
+    for i in range(0, nbuser):
+        for j in range(0, nbfilm):
+            if matrice[i][j] != -1:
+                score = matrice[i][j] - (moy_notes + bu[i] + bi[j])
+                matR[i][j] = score
+
+    return matR
+
+
 
     ###################################################
 
