@@ -26,19 +26,46 @@ def	readdata(file,nbuser,nbfilm):
 
 # RMSE random
 def calc_rmse_predi_random(nbuser, nbvote, nbfilm, matrice):
-    sum_core = 0
+
+    sum_score = 0
     for index_user in range(0, nbuser):
         for index_film in range(0, nbfilm):
             score = matrice[index_user][index_film]
             if score > -1:
                 score_random = (random.random() * 4) + 1
-                sum_core += pow((score - score_random), 2)
-    return math.sqrt(sum_core/ nbvote)
+                sum_score += pow((score - score_random), 2)
+    return math.sqrt(sum_score/ nbvote)
+
+def calc_rmse_predict_basique(moy_notes, nbuser, nbfilm, matrice):
+
+    Vue_film = numpy.zeros(nbfilm)
+    Vue_user = numpy.zeros(nbuser)
+    for index_film in range(0, nbfilm):
+        nb_vue = 0
+        for index_user in range(0, nbuser):
+            score = matrice[index_user][index_film]
+            if score > -1:
+                nb_vue += 1
+        Vue_film[index_film] = nb_vue
+        
+    print(Vue_film)
+    for index_user in range(0, nbuser):
+        nb_vue = 0
+        for index_film in range(0, nbfilm):
+            score = matrice[index_user][index_film]
+            if score > -1:
+                nb_vue += 1
+        Vue_user[index_user] = nb_vue
+
+    sum_score = 0
+
+
 
 nbuser = 943
 nbfilm = 1682
 nbvote = 100000
 
 mean, matrice_recommandation = readdata('ml-100k/u.data', nbuser, nbfilm)
-print(mean)
+
 print(calc_rmse_predi_random(nbuser, nbvote, nbfilm, matrice_recommandation))
+calc_rmse_predict_basique(mean, nbuser, nbfilm, matrice_recommandation)
