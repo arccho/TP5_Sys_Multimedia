@@ -47,8 +47,8 @@ def calc_rmse_predict_basique(moy_notes, nbuser, nbfilm, matrice):
             if score > -1:
                 nb_vue += 1
         Vue_film[index_film] = nb_vue
-        
-    print(Vue_film)
+    #numpy.set_printoptions(threshold=numpy.nan)
+    #print(Vue_film)
     for index_user in range(0, nbuser):
         nb_vue = 0
         for index_film in range(0, nbfilm):
@@ -58,6 +58,26 @@ def calc_rmse_predict_basique(moy_notes, nbuser, nbfilm, matrice):
         Vue_user[index_user] = nb_vue
 
     sum_score = 0
+    for index_user in range(0, nbuser):
+        for index_film in range(0, nbfilm):
+
+            sum_rui = 0
+            # calcul bu
+            for index in range(0, nbfilm):
+                score = matrice[index_user][index]
+                if score > -1:
+                    sum_rui += score
+            bu = (sum_rui/Vue_user[index_user]) - moy_notes
+
+            sum_rui = 0
+            # calcul bi
+            for index in range(0, nbuser):
+                score = matrice[index][index_film]
+                if score > -1:
+                    sum_rui += score
+            bi = (sum_rui/Vue_film[index_film]) - moy_notes
+
+
 
 
 
