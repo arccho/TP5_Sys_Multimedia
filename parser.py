@@ -131,32 +131,32 @@ def calc_rmse_predict_voisin(moy_notes, nbuser, nbvote, nbfilm, matrice):
                 sum_rui += score
         bi.append(sum_rui / Vue_film[index_film] - moy_notes)
 
+    ##################################
 
     # Remplissage de la matrice residuelle
     for i in range(0, nbuser):
         for j in range(0, nbfilm):
             if matrice[i][j] != -1:
-                score = matrice[i][j] - (moy_notes + bu[i] + bi[j])
-                matR[i][j] = score
+                matR[i][j] = matrice[i][j] - (moy_notes + bu[i] + bi[j])
 
 
     similarite = numpy.zeros((nbfilm, nbfilm))
     for i in range(0, nbfilm):
         for j in range(0, nbfilm):
-            score = numpy.dot(matrice[:][i], matrice[:][j])
+            score = numpy.dot(matrice[:,i], matrice[:,j])
 
             scoreFilmi = 0
             scoreFilmj = 0
             #Somme au carre sur les utilisateurs
             for user in range(0,nbuser):
-                scoreFilmi += matrice[user][i]
-                scoreFilmj += matrice[user][j]
+                scoreFilmi += math.pow(matrice[user][i],2)
+                scoreFilmj += math.pow(matrice[user][j],2)
 
             score = score / sqrt(scoreFilmi * scoreFilmj)
             # Stockage du taux de similarite entre deux films dans le tableau
             similarite[i][j] = score
 
-    scoreVoisinage = 
+    #scoreVoisinage =
 
 
 
