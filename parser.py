@@ -158,21 +158,25 @@ def calc_rmse_predict_voisin(moy_notes, nbuser, nbvote, nbfilm, matrice, L):
 
     ###########################################
 
-    scoreVoisinage =0
+    sum_score = 0
+    for index_user in range(0, nbuser):
+        for index_film in range(0, nbfilm):
+            score = matrice[index_user][index_film]
+            if score > -1:
+                tuple = sorted(enumerate(numpy.absolute(similarite[index_film])), key=lambda x:x[1])
+                tuple.reverse()
+                numerateur = 0
+                denominateur = 0
+                #ne prend pas en compte l'indice 0 car il s'agit du meme film
+                for index_L in range(1, L+1):
+                    numerateur += similarite[tuple[index_L][0]][index_film] * matR[index_user][tuple[index_L][0]]
+                    denominateur += abs(similarite[tuple[index_L][0]][index_film])
 
+                score_voisin = moy_notes + bu[index_user] + bi[index_film] + (numerateur / denominateur)
+                sum_score += pow((score - score_voisin), 2)
 
+    return math.sqrt(sum_score / nbvote)
 
-
-
-
-
-
-
-
-    ###################################################
-
-
-    return 0
 
 def compute_nbvote_mean(matrice,nbuser,nbfilm):
     nbvote=0
@@ -185,16 +189,6 @@ def compute_nbvote_mean(matrice,nbuser,nbfilm):
                 nbvote = nbvote+1
                 cumul += val
     return nbvote, cumul/nbvote
-
-def calc_similarite_voisinage(i, j, matriceInit, nbuser, nbfilm, mean, nbvote):
-    matrice = numpy.ones(nbuser, nbfilm)
-
-    # Remplissage de la matrice residuelle
-    for i in range(0, nbuser):
-        for j in range(0, nbfilm):
-            if matriceInit[i][j] != -1:
-                score = matriceInit[i][j] - calc_rmse_predict_basique(mean, nbuser, nbvote, nbfilm, matriceInit)
-                matrice[i][j] = score
 
     
 
@@ -213,5 +207,5 @@ nbuser_reduit=int(nbuser/6)
 nbfilm_reduit=int(nbfilm/6)
 matrice_reduit=matrice_recommandation[0:nbuser,0:nbfilm]
 nbvote_reduit, mean_reduit = compute_nbvote_mean(matrice_reduit,nbuser_reduit,nbfilm_reduit)
-
-print(calc_rmse_predict_voisin(mean_reduit, nbuser_reduit, nbvote_reduit, nbfilm_reduit, matrice_reduit, 10))
+L = 10
+print(calc_rmse_predict_voisin(mean_reduit, nbuser_reduit, nbvote_reduit, nbfilm_reduit, matrice_reduit, L))
