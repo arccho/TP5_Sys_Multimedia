@@ -1,6 +1,7 @@
 import numpy
 import math
 import random
+from math import sqrt
 
 def	readdata(file,nbuser,nbfilm):
     res = numpy.ones((nbuser,	nbfilm))
@@ -84,7 +85,7 @@ def calc_rmse_predict_basique(moy_notes, nbuser, nbvote, nbfilm, matrice):
             if score > -1:
                 score_basique = moy_notes + bu[index_user] + bi[index_film]
                 sum_score += pow((score - score_basique), 2)
-    return math.sqrt(sum_score/ nbvote)
+    return sqrt(sum_score/ nbvote)
 
 def calc_rmse_predict_voisin(moy_notes, nbuser, nbvote, nbfilm, matrice):
     bu = list()
@@ -138,7 +139,31 @@ def calc_rmse_predict_voisin(moy_notes, nbuser, nbvote, nbfilm, matrice):
                 score = matrice[i][j] - (moy_notes + bu[i] + bi[j])
                 matR[i][j] = score
 
-    return matR
+
+    similarite = numpy.zeros((nbfilm, nbfilm))
+    for i in range(0, nbfilm):
+        for j in range(0, nbfilm):
+            score = numpy.dot(matrice[:][i], matrice[:][j])
+
+            scoreFilmi = 0
+            scoreFilmj = 0
+            #Somme au carre sur les utilisateurs
+            for user in range(0,nbuser):
+                scoreFilmi += matrice[user][i]
+                scoreFilmj += matrice[user][j]
+
+            score = score / sqrt(scoreFilmi * scoreFilmj)
+            # Stockage du taux de similarite entre deux films dans le tableau
+            similarite[i][j] = score
+
+    scoreVoisinage = 
+
+
+
+
+
+
+
 
 
 
