@@ -169,6 +169,7 @@ def calc_rmse_predict_voisin(moy_notes, nbuser, nbvote, nbfilm, matrice, L):
                 denominateur = 0
                 #ne prend pas en compte l'indice 0 car il s'agit du meme film
                 for index_L in range(1, L+1):
+                    #print(similarite[tuple[index_L][0]][index_film], tuple[index_L][1])
                     numerateur += similarite[tuple[index_L][0]][index_film] * matR[index_user][tuple[index_L][0]]
                     denominateur += abs(similarite[tuple[index_L][0]][index_film])
 
