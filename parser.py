@@ -87,7 +87,7 @@ def calc_rmse_predict_basique(moy_notes, nbuser, nbvote, nbfilm, matrice):
                 sum_score += pow((score - score_basique), 2)
     return sqrt(sum_score/ nbvote)
 
-def calc_rmse_predict_voisin(moy_notes, nbuser, nbvote, nbfilm, matrice):
+def calc_rmse_predict_voisin(moy_notes, nbuser, nbvote, nbfilm, matrice, L):
     bu = list()
     bi = list()
 
@@ -143,20 +143,22 @@ def calc_rmse_predict_voisin(moy_notes, nbuser, nbvote, nbfilm, matrice):
     similarite = numpy.zeros((nbfilm, nbfilm))
     for i in range(0, nbfilm):
         for j in range(0, nbfilm):
-            score = numpy.dot(matrice[:,i], matrice[:,j])
+            score = numpy.dot(matR[:,i], matR[:,j])
 
             scoreFilmi = 0
             scoreFilmj = 0
             #Somme au carre sur les utilisateurs
             for user in range(0,nbuser):
-                scoreFilmi += math.pow(matrice[user][i],2)
-                scoreFilmj += math.pow(matrice[user][j],2)
+                scoreFilmi += math.pow(matR[user][i],2)
+                scoreFilmj += math.pow(matR[user][j],2)
 
             score = score / sqrt(scoreFilmi * scoreFilmj)
             # Stockage du taux de similarite entre deux films dans le tableau
             similarite[i][j] = score
 
-    #scoreVoisinage =
+    ###########################################
+
+    scoreVoisinage =0
 
 
 
@@ -212,4 +214,4 @@ nbfilm_reduit=int(nbfilm/6)
 matrice_reduit=matrice_recommandation[0:nbuser,0:nbfilm]
 nbvote_reduit, mean_reduit = compute_nbvote_mean(matrice_reduit,nbuser_reduit,nbfilm_reduit)
 
-print(calc_rmse_predict_voisin(mean_reduit, nbuser_reduit, nbvote_reduit, nbfilm_reduit, matrice_reduit))
+print(calc_rmse_predict_voisin(mean_reduit, nbuser_reduit, nbvote_reduit, nbfilm_reduit, matrice_reduit, 10))
